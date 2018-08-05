@@ -14,6 +14,7 @@
         <item name="colorSwitchThumbNormal">@color/grey300</item>
         <!--Inactive track color-->
         <item name="android:colorForeground">@color/grey600</item>
+        <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
 
     </style>
 
@@ -37,6 +38,8 @@
         <item name="colorSwitchThumbNormal">@color/grey300</item>
         <!--Inactive track color-->
         <item name="android:colorForeground">@color/grey600</item>
+
+        <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
     </style>
 
     <style name="PopupMenuLight" parent="Widget.AppCompat.PopupMenu">

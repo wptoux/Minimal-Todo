@@ -28,4 +28,11 @@
     <string name="snooze">Snooze</string>
     <string name="remove">Remove</string>
     <string name="todo_error">Please enter a Todo</string>
+
+    <string name="bonuses">bonuses</string>
+    <string name="missions">missions</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="set_timer">Set Timer</string>
 </resources>
