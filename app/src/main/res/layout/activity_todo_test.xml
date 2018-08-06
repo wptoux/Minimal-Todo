@@ -51,7 +51,7 @@
                             android:textColor="@color/icons" />
                             
                         <EditText
-                            android:id="@+id/userToDoEditBonus"
+                            android:id="@+id/userToDoBonusEditText"
                             android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="32dp"
@@ -149,7 +149,7 @@
                         android:textSize="16sp" />
 
                     <android.support.v7.widget.SwitchCompat
-                        android:id="@+id/toDoHasTimerSwitchCompat"
+                        android:id="@+id/toDoSetTimerEditText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -200,7 +200,7 @@
                             android:textColor="?attr/colorAccent" />
 
                         <EditText
-                            android:id="@+id/newTodoTimeEditText"
+                            android:id="@+id/newTodoTimerEditText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

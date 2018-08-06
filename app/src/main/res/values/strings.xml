@@ -32,7 +32,6 @@
     <string name="bonuses">bonuses</string>
     <string name="missions">missions</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="set_timer">Set Timer</string>
+    <string name="use">use</string>
 </resources>

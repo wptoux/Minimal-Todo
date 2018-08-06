@@ -385,8 +385,6 @@ public class MainFragment extends AppDefaultFragment {
             if (!existed) {
                 addToDataStore(item);
             }
-
-
         }
     }
 

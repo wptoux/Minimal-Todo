@@ -22,13 +22,13 @@ public class MainActivity extends AppCompatActivity {
     private FragmentStatePagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
     private TabLayout mTabs;
-    private static Context mAppliactionContext;
+    private static Context mApplicationContext;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(contentViewLayoutRes());
 
-        mAppliactionContext = getApplicationContext();
+        mApplicationContext = getApplicationContext();
 
         final android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static Context applicationContext(){
-        return mAppliactionContext;
+        return mApplicationContext;
     }
 }
 

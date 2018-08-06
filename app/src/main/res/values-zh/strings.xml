@@ -30,4 +30,7 @@
     <string name="remove">移除</string>
     <string name="bonuses">奖励</string>
     <string name="missions">任务</string>
+
+    <string name="set_timer">设置时间</string>
+    <string name="use">使用</string>
 </resources>

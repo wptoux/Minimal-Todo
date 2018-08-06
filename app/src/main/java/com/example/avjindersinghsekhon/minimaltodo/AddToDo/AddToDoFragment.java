@@ -76,6 +76,11 @@ public class AddToDoFragment extends AppDefaultFragment implements DatePickerDia
     private String theme;
     AnalyticsApplication app;
 
+    private EditText mBonusEditText;
+    private EditText mSetTimerEditText;
+
+    private int mTimerMinutes = 0;
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -226,9 +231,17 @@ public class AddToDoFragment extends AppDefaultFragment implements DatePickerDia
                     app.send(this, "Action", "Date in the Past");
                     makeResult(RESULT_CANCELED);
                 } else {
-                    app.send(this, "Action", "Make Todo");
-                    makeResult(RESULT_OK);
-                    getActivity().finish();
+                    if (mTimerMinutes == 0) {
+                        app.send(this, "Action", "Make Todo");
+                        makeResult(RESULT_OK);
+                        getActivity().finish();
+                    }
+                    else{
+                        Intent intent = new Intent(getContext(), TimerActivity.class);
+                        intent.putExtra("timerMinutes", mTimerMinutes);
+
+                        startActivity(intent);
+                    }
                 }
                 hideKeyboard(mToDoTextBodyEditText);
             }
@@ -236,7 +249,7 @@ public class AddToDoFragment extends AppDefaultFragment implements DatePickerDia
 
 
         mDateEditText = (EditText) view.findViewById(R.id.newTodoDateEditText);
-        mTimeEditText = (EditText) view.findViewById(R.id.newTodoTimeEditText);
+        mTimeEditText = (EditText) view.findViewById(R.id.newTodoTimerEditText);
 
         mDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -350,6 +363,30 @@ public class AddToDoFragment extends AppDefaultFragment implements DatePickerDia
 //                timePickerDialog.show(getFragmentManager(), "TimeFragment");
 //            }
 //        });
+
+        mBonusEditText = (EditText) view.findViewById(R.id.userToDoBonusEditText);
+        mSetTimerEditText = (EditText) view.findViewById(R.id.toDoSetTimerEditText);
+
+        mSetTimerEditText.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        hideKeyboard(mSetTimerEditText);
+
+                        TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(
+                                new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+                                        mSetTimerEditText.setText(hourOfDay + ":" + minute);
+                                        mToDoDateSwitch.setChecked(false);
+                                        mTimerMinutes = hourOfDay * 60 + minute;
+                                    }
+                                },
+                                0, 0,true);
+
+                    }
+                }
+        );
 
     }
 
