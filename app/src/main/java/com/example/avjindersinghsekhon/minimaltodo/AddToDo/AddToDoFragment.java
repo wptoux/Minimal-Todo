@@ -383,6 +383,10 @@ public class AddToDoFragment extends AppDefaultFragment implements DatePickerDia
                                     }
                                 },
                                 0, 0,true);
+                        if (theme.equals(MainFragment.DARKTHEME)) {
+                            timePickerDialog.setThemeDark(true);
+                        }
+                        timePickerDialog.show(getActivity().getFragmentManager(), "TimeFragment");
 
                     }
                 }
