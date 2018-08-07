@@ -70,6 +70,7 @@ public class AddToDoFragment extends AppDefaultFragment implements DatePickerDia
     private Toolbar mToolbar;
     private Date mUserReminderDate;
     private int mUserColor;
+    private int mUserBonus;
     private boolean setDateButtonClickedOnce = false;
     private boolean setTimeButtonClickedOnce = false;
     private LinearLayout mContainerLayout;
@@ -124,6 +125,7 @@ public class AddToDoFragment extends AppDefaultFragment implements DatePickerDia
         mUserHasReminder = mUserToDoItem.hasReminder();
         mUserReminderDate = mUserToDoItem.getToDoDate();
         mUserColor = mUserToDoItem.getTodoColor();
+        mUserBonus = mUserToDoItem.getBonus();
 
 
 //        if(mUserToDoItem.getLastEdited()==null) {
@@ -365,6 +367,29 @@ public class AddToDoFragment extends AppDefaultFragment implements DatePickerDia
 //        });
 
         mBonusEditText = (EditText) view.findViewById(R.id.userToDoBonusEditText);
+        if (mUserBonus != 0){
+            mBonusEditText.setText(mUserBonus + "");
+        }
+
+        mBonusEditText.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        mUserBonus = Integer.parseInt(s.toString());
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                }
+        );
+
         mSetTimerEditText = (EditText) view.findViewById(R.id.toDoSetTimerEditText);
 
         mSetTimerEditText.setOnClickListener(
@@ -583,6 +608,10 @@ public class AddToDoFragment extends AppDefaultFragment implements DatePickerDia
         mUserToDoItem.setHasReminder(mUserHasReminder);
         mUserToDoItem.setToDoDate(mUserReminderDate);
         mUserToDoItem.setTodoColor(mUserColor);
+
+        if (mUserBonus > 0){
+            mUserToDoItem.setBonus(mUserBonus);
+        }
         i.putExtra(MainFragment.TODOITEM, mUserToDoItem);
         getActivity().setResult(result, i);
     }

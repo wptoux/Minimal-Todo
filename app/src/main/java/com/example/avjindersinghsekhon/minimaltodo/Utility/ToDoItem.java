@@ -14,20 +14,23 @@ public class ToDoItem implements Serializable {
     private int mTodoColor;
     private Date mToDoDate;
     private UUID mTodoIdentifier;
+    private int mBonus;
     private static final String TODOTEXT = "todotext";
     private static final String TODOREMINDER = "todoreminder";
     //    private static final String TODOLASTEDITED = "todolastedited";
     private static final String TODOCOLOR = "todocolor";
     private static final String TODODATE = "tododate";
     private static final String TODOIDENTIFIER = "todoidentifier";
+    private static final String TODOBOUNUS = "tobonus";
 
 
-    public ToDoItem(String todoBody, boolean hasReminder, Date toDoDate) {
+    public ToDoItem(String todoBody, boolean hasReminder, Date toDoDate, int bonus) {
         mToDoText = todoBody;
         mHasReminder = hasReminder;
         mToDoDate = toDoDate;
         mTodoColor = 1677725;
         mTodoIdentifier = UUID.randomUUID();
+        mBonus = bonus;
     }
 
     public ToDoItem(JSONObject jsonObject) throws JSONException {
@@ -42,6 +45,10 @@ public class ToDoItem implements Serializable {
         if (jsonObject.has(TODODATE)) {
             mToDoDate = new Date(jsonObject.getLong(TODODATE));
         }
+
+        if (jsonObject.has(TODOBOUNUS)){
+            mBonus = jsonObject.getInt(TODOBOUNUS);
+        }
     }
 
     public JSONObject toJSON() throws JSONException {
@@ -55,12 +62,16 @@ public class ToDoItem implements Serializable {
         jsonObject.put(TODOCOLOR, mTodoColor);
         jsonObject.put(TODOIDENTIFIER, mTodoIdentifier.toString());
 
+        if (mBonus != 0){
+            jsonObject.put(TODOBOUNUS, mBonus);
+        }
+
         return jsonObject;
     }
 
 
     public ToDoItem() {
-        this("Clean my room", true, new Date());
+        this("", false, null, 0);
     }
 
     public String getToDoText() {
@@ -98,6 +109,14 @@ public class ToDoItem implements Serializable {
 
     public UUID getIdentifier() {
         return mTodoIdentifier;
+    }
+
+    public int getBonus() {
+        return mBonus;
+    }
+
+    public void setBonus(int mBonus) {
+        this.mBonus = mBonus;
     }
 }
 

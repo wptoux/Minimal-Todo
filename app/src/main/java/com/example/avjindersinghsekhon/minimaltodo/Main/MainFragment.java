@@ -148,7 +148,7 @@ public class MainFragment extends AppDefaultFragment {
             public void onClick(View v) {
                 app.send(this, "Action", "FAB pressed");
                 Intent newTodo = new Intent(getContext(), AddToDoActivity.class);
-                ToDoItem item = new ToDoItem("", false, null);
+                ToDoItem item = new ToDoItem("", false, null, 0);
                 int color = ColorGenerator.MATERIAL.getRandomColor();
                 item.setTodoColor(color);
                 //noinspection ResourceType
@@ -257,7 +257,7 @@ public class MainFragment extends AppDefaultFragment {
         So, inside our SettingsFragment, whenever the checkbox's value is changed, in our shared preferences,
         we mark our recreate_activity key as true.
 
-        Note: the recreate_key's value is changed to false before calling recreate(), or we woudl have ended up in an infinite loop,
+        Note: the recreate_key's value is changed to false before calling recreate(), or we would have ended up in an infinite loop,
         as onResume() will be called on recreation, which will again call recreate() and so on....
         and get an ANR
 
@@ -422,7 +422,7 @@ public class MainFragment extends AppDefaultFragment {
 
     public void makeUpItems(ArrayList<ToDoItem> items, int len) {
         for (String testString : testStrings) {
-            ToDoItem item = new ToDoItem(testString, false, new Date());
+            ToDoItem item = new ToDoItem(testString, false, new Date(), 0);
             //noinspection ResourceType
 //            item.setTodoColor(getResources().getString(R.color.red_secondary));
             items.add(item);
@@ -544,6 +544,8 @@ public class MainFragment extends AppDefaultFragment {
                 holder.mTimeTextView.setText(timeToShow);
             }
 
+            holder.mBonusTextView.setText(item.getBonus() + "");
+
 
         }
 
@@ -567,6 +569,7 @@ public class MainFragment extends AppDefaultFragment {
             //            TextView mColorTextView;
             ImageView mColorImageView;
             TextView mTimeTextView;
+            TextView mBonusTextView;
 //            int color = -1;
 
             public ViewHolder(View v) {
@@ -586,6 +589,7 @@ public class MainFragment extends AppDefaultFragment {
 //                mColorTextView = (TextView)v.findViewById(R.id.toDoColorTextView);
                 mColorImageView = (ImageView) v.findViewById(R.id.toDoListItemColorImageView);
                 linearLayout = (LinearLayout) v.findViewById(R.id.listItemLinearLayout);
+                mBonusTextView = (TextView) v.findViewById(R.id.toDoListItemBonusTextview);
             }
 
 
