@@ -42,7 +42,7 @@
         <TextView
             android:id="@+id/toDoListItemBonusTextview"
             android:lines="1"
-            android:gravity="end|bottom"
+            android:gravity="end|top"
             android:textColor="@color/secondary_text"
             android:ellipsize="end"
             android:textSize="24sp"

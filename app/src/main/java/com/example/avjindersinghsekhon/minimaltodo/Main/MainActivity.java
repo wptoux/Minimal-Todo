@@ -18,6 +18,8 @@ import com.example.avjindersinghsekhon.minimaltodo.About.AboutActivity;
 import com.example.avjindersinghsekhon.minimaltodo.R;
 import com.example.avjindersinghsekhon.minimaltodo.Settings.SettingsActivity;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
     private FragmentStatePagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         mTabs = (TabLayout) findViewById(R.id.tabs);
 
         mTabs.setupWithViewPager(mViewPager);
+
+        Objects.requireNonNull(mTabs.getTabAt(1)).select();
     }
 
     private int contentViewLayoutRes() {

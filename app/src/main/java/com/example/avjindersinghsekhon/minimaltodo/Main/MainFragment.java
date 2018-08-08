@@ -448,7 +448,7 @@ public class MainFragment extends AppDefaultFragment {
         }
 
         @Override
-        public void onItemRemoved(final int position) {
+        public void onItemRemoved(final int position, int flag) {
             //Remove this line if not using Google Analytics
             app.send(this, "Action", "Swiped Todo Away");
 
@@ -477,6 +477,8 @@ public class MainFragment extends AppDefaultFragment {
                             notifyItemInserted(mIndexOfDeletedToDoItem);
                         }
                     }).show();
+
+            // TODO: Add Bonus here
         }
 
         @Override

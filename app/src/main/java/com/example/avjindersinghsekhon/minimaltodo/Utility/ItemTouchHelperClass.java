@@ -6,10 +6,13 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 public class ItemTouchHelperClass extends ItemTouchHelper.Callback {
     private ItemTouchHelperAdapter adapter;
 
+    public static final int FLAG_DONE = 0;
+    public static final int FLAG_CANCELLED = 1;
+
     public interface ItemTouchHelperAdapter {
         void onItemMoved(int fromPosition, int toPosition);
 
-        void onItemRemoved(int position);
+        void onItemRemoved(int position, int flag);
     }
 
     public ItemTouchHelperClass(ItemTouchHelperAdapter ad) {
@@ -42,8 +45,12 @@ public class ItemTouchHelperClass extends ItemTouchHelper.Callback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        adapter.onItemRemoved(viewHolder.getAdapterPosition());
-
+        if (direction == ItemTouchHelper.END){
+            adapter.onItemRemoved(viewHolder.getAdapterPosition(), FLAG_DONE);
+        }
+        else if (direction == ItemTouchHelper.START){
+            adapter.onItemRemoved(viewHolder.getAdapterPosition(), FLAG_CANCELLED);
+        }
     }
 
 //    @SuppressWarnings("deprecation")
