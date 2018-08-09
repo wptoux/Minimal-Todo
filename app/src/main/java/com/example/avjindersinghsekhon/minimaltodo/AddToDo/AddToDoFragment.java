@@ -241,6 +241,7 @@ public class AddToDoFragment extends AppDefaultFragment implements DatePickerDia
                     else{
                         Intent intent = new Intent(getContext(), TimerActivity.class);
                         intent.putExtra("timerMinutes", mTimerMinutes);
+                        intent.putExtra("bonus", mUserBonus);
 
                         startActivity(intent);
                     }

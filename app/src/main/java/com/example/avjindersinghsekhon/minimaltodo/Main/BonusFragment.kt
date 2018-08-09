@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.avjindersinghsekhon.minimaltodo.R
-import kotlinx.android.synthetic.main.fragment_about.*
 import kotlinx.android.synthetic.main.fragment_bonus.*
 
 class BonusFragment : Fragment(){
@@ -26,6 +25,7 @@ class BonusFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        tvBonusNum.text = loadBonus()
 
         button.setOnClickListener {
             val toUse = editText.text.toString().toInt()
@@ -59,13 +59,18 @@ class BonusFragment : Fragment(){
         super.onDetach()
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser and isResumed){
+            tvBonusNum.text = loadBonus()
+        }
 
+    }
+    private fun loadBonus(): String{
         val preference = context!!.getSharedPreferences(MainFragment.SHARED_PREF_BONUS, MODE_PRIVATE)
 
         val bonus = preference.getInt(MainFragment.SHARED_PREF_BONUS, 0)
 
-        tvBonusNum.text = bonus.toString()
+        return bonus.toString()
     }
 }
