@@ -106,7 +106,7 @@ class MyPagerAdapter extends FragmentStatePagerAdapter{
         super(fm);
 
         mFragments = new Fragment[2];
-        mFragments[0] = new MissionFragment();
+        mFragments[0] = new BonusFragment();
         mFragments[1] = new MainFragment();
 
         mTitles = new String[2];

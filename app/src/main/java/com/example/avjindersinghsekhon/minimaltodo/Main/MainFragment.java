@@ -49,6 +49,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.content.Context.ALARM_SERVICE;
@@ -72,6 +73,7 @@ public class MainFragment extends AppDefaultFragment {
     private CustomRecyclerScrollViewListener customRecyclerScrollViewListener;
     public static final String SHARED_PREF_DATA_SET_CHANGED = "com.avjindersekhon.datasetchanged";
     public static final String CHANGE_OCCURED = "com.avjinder.changeoccured";
+    public static final String SHARED_PREF_BONUS = "com.wangzhen.bonus";
     private int mTheme = -1;
     private String theme = "name_of_the_theme";
     public static final String THEME_PREFERENCES = "com.avjindersekhon.themepref";
@@ -448,9 +450,11 @@ public class MainFragment extends AppDefaultFragment {
         }
 
         @Override
-        public void onItemRemoved(final int position, int flag) {
-            //Remove this line if not using Google Analytics
-            app.send(this, "Action", "Swiped Todo Away");
+        public void onItemRemoved(final int position, final int flag) {
+            if (flag == ItemTouchHelperClass.FLAG_CANCELLED) {
+                //Remove this line if not using Google Analytics
+                app.send(this, "Action", "Swiped Todo Away");
+            }
 
             mJustDeletedToDoItem = items.remove(position);
             mIndexOfDeletedToDoItem = position;
@@ -458,27 +462,64 @@ public class MainFragment extends AppDefaultFragment {
             deleteAlarm(i, mJustDeletedToDoItem.getIdentifier().hashCode());
             notifyItemRemoved(position);
 
-//            String toShow = (mJustDeletedToDoItem.getToDoText().length()>20)?mJustDeletedToDoItem.getToDoText().substring(0, 20)+"...":mJustDeletedToDoItem.getToDoText();
-            String toShow = "Todo";
-            Snackbar.make(mCoordLayout, "Deleted " + toShow, Snackbar.LENGTH_LONG)
-                    .setAction("UNDO", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+            if (flag == ItemTouchHelperClass.FLAG_DONE){
+                SharedPreferences preferences = Objects.requireNonNull(getContext()).getSharedPreferences(SHARED_PREF_BONUS, MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                int bonus = preferences.getInt(SHARED_PREF_BONUS, 0);
+                bonus += mJustDeletedToDoItem.getBonus();
 
-                            //Comment the line below if not using Google Analytics
-                            app.send(this, "Action", "UNDO Pressed");
-                            items.add(mIndexOfDeletedToDoItem, mJustDeletedToDoItem);
-                            if (mJustDeletedToDoItem.getToDoDate() != null && mJustDeletedToDoItem.hasReminder()) {
-                                Intent i = new Intent(getContext(), TodoNotificationService.class);
-                                i.putExtra(TodoNotificationService.TODOTEXT, mJustDeletedToDoItem.getToDoText());
-                                i.putExtra(TodoNotificationService.TODOUUID, mJustDeletedToDoItem.getIdentifier());
-                                createAlarm(i, mJustDeletedToDoItem.getIdentifier().hashCode(), mJustDeletedToDoItem.getToDoDate().getTime());
+                editor.putInt(SHARED_PREF_BONUS, bonus);
+                editor.apply();
+            }
+
+            String toShow = (mJustDeletedToDoItem.getToDoText().length()>10)?mJustDeletedToDoItem.getToDoText().substring(0, 10)+"...":mJustDeletedToDoItem.getToDoText();
+
+            if (flag == ItemTouchHelperClass.FLAG_CANCELLED) {
+                Snackbar.make(mCoordLayout, "Deleted " + toShow, Snackbar.LENGTH_LONG)
+                        .setAction("UNDO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                //Comment the line below if not using Google Analytics
+                                app.send(this, "Action", "UNDO Pressed");
+                                items.add(mIndexOfDeletedToDoItem, mJustDeletedToDoItem);
+                                if (mJustDeletedToDoItem.getToDoDate() != null && mJustDeletedToDoItem.hasReminder()) {
+                                    Intent i = new Intent(getContext(), TodoNotificationService.class);
+                                    i.putExtra(TodoNotificationService.TODOTEXT, mJustDeletedToDoItem.getToDoText());
+                                    i.putExtra(TodoNotificationService.TODOUUID, mJustDeletedToDoItem.getIdentifier());
+                                    createAlarm(i, mJustDeletedToDoItem.getIdentifier().hashCode(), mJustDeletedToDoItem.getToDoDate().getTime());
+                                }
+                                notifyItemInserted(mIndexOfDeletedToDoItem);
                             }
-                            notifyItemInserted(mIndexOfDeletedToDoItem);
-                        }
-                    }).show();
+                        }).show();
+            }
+            else  if (flag == ItemTouchHelperClass.FLAG_DONE){
+                Snackbar.make(mCoordLayout, "Done " + toShow, Snackbar.LENGTH_LONG)
+                        .setAction("UNDO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
-            // TODO: Add Bonus here
+                                //Comment the line below if not using Google Analytics
+                                app.send(this, "Action", "UNDO Pressed");
+                                items.add(mIndexOfDeletedToDoItem, mJustDeletedToDoItem);
+                                if (mJustDeletedToDoItem.getToDoDate() != null && mJustDeletedToDoItem.hasReminder()) {
+                                    Intent i = new Intent(getContext(), TodoNotificationService.class);
+                                    i.putExtra(TodoNotificationService.TODOTEXT, mJustDeletedToDoItem.getToDoText());
+                                    i.putExtra(TodoNotificationService.TODOUUID, mJustDeletedToDoItem.getIdentifier());
+                                    createAlarm(i, mJustDeletedToDoItem.getIdentifier().hashCode(), mJustDeletedToDoItem.getToDoDate().getTime());
+                                }
+                                notifyItemInserted(mIndexOfDeletedToDoItem);
+
+                                SharedPreferences preferences = Objects.requireNonNull(getContext()).getSharedPreferences(SHARED_PREF_BONUS, MODE_PRIVATE);
+                                SharedPreferences.Editor editor = preferences.edit();
+                                int bonus = preferences.getInt(SHARED_PREF_BONUS, 0);
+                                bonus -= mJustDeletedToDoItem.getBonus();
+
+                                editor.putInt(SHARED_PREF_BONUS, bonus);
+                                editor.apply();
+                            }
+                        }).show();
+            }
         }
 
         @Override
@@ -493,7 +534,8 @@ public class MainFragment extends AppDefaultFragment {
 //            if(item.getToDoDate()!=null && item.getToDoDate().before(new Date())){
 //                item.setToDoDate(null);
 //            }
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE);
+            SharedPreferences sharedPreferences = Objects.requireNonNull(getActivity()).getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE);
+
             //Background color for each to-do item. Necessary for night/day mode
             int bgColor;
             //color of title text in our to-do item. White for night mode, dark gray for day mode
