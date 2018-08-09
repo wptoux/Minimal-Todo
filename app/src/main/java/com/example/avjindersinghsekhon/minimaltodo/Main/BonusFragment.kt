@@ -36,14 +36,14 @@ class BonusFragment : Fragment(){
 
             if (bonus < 0){
                 Toast.makeText(context, "Invalid value!", Toast.LENGTH_SHORT).show()
-                return
             }
+            else {
+                val editor = preference.edit()
+                editor.putInt(MainFragment.SHARED_PREF_BONUS, bonus)
+                editor.apply()
 
-            val editor = preference.edit()
-            editor.putInt(MainFragment.SHARED_PREF_BONUS, bonus)
-            editor.apply()
-
-            tvBonusNum.text = bonus.toString()
+                tvBonusNum.text = bonus.toString()
+            }
         }
     }
 
